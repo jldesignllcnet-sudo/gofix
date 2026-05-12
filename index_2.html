@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="GOFiX — Find trusted local contractors, get material pricing from Home Depot, Menards & Amazon, and DIY with YouTube & TikTok tutorials. Launching in Chicagoland.">
+<meta property="og:url" content="https://gofix.live">
+<meta name="theme-color" content="#E8460A">
+<meta property="og:title" content="GOFiX — Find Pros. Get It Done.">
+<meta property="og:description" content="The home services app built for homeowners. Find contractors, price materials, or DIY it yourself.">
+<meta property="og:image" content="https://gofix.live/og.png">
+<title>GOFiX — Find Pros. Get It Done.</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ── Reset & Base ─────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --or:   #E8460A;
+  --or2:  #FF5C1A;
+  --ord:  #B83508;
+  --dk:   #080808;
+  --dk2:  #0F0F0F;
+  --dk3:  #161616;
+  --wh:   #FFFFFF;
+  --off:  #F5F2EE;
+  --gy:   #666666;
+  --gyl:  #999999;
+  --gyll: #CCCCCC;
+  --gn:   #00AA66;
+  --go:   #F5A623;
+  --pu:   #7C3AED;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--dk);
+  color: var(--wh);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── Custom Cursor ───────────────────────────────────────────────────── */
+#cursor {
+  position: fixed; top: 0; left: 0; z-index: 9999;
+  pointer-events: none;
+}
+#cursor-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--or); position: absolute;
+  transform: translate(-50%, -50%);
+  transition: transform .1s;
+}
+#cursor-ring {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid rgba(232,70,10,.5);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  transition: width .3s, height .3s, border-color .3s, transform .15s;
+}
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring {
+  width: 56px; height: 56px;
+  border-color: var(--or);
+}
+
+/* ── Noise overlay ───────────────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: .4;
+}
+
+/* ── NAV ─────────────────────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 40px;
+  height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(8,8,8,.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  transition: background .3s;
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; letter-spacing: 1px;
+  text-decoration: none; line-height: 1;
+}
+.nav-logo span:first-child { color: var(--wh); }
+.nav-logo span:last-child  { color: var(--or); }
+
+nav ul {
+  display: flex; gap: 36px; list-style: none;
+}
+nav ul a {
+  color: var(--gyll); font-size: 14px; font-weight: 500;
+  text-decoration: none; transition: color .2s;
+  letter-spacing: .3px;
+}
+nav ul a:hover { color: var(--wh); }
+
+.nav-cta {
+  background: var(--or); color: var(--wh);
+  border: none; border-radius: 8px;
+  padding: 10px 22px; font-size: 14px; font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  cursor: none; text-decoration: none;
+  transition: background .2s, transform .15s;
+  display: inline-block;
+}
+.nav-cta:hover { background: var(--or2); transform: translateY(-1px); }
+
+/* ── HERO ─────────────────────────────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+  padding: 120px 40px 80px;
+}
+
+/* Animated gradient mesh */
+.mesh {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 60% 40%, rgba(232,70,10,.14) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 20% 70%, rgba(232,70,10,.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 80% 80%, rgba(124,58,237,.06) 0%, transparent 60%);
+  animation: meshPulse 8s ease-in-out infinite alternate;
+}
+@keyframes meshPulse {
+  0%  { transform: scale(1) rotate(0deg); }
+  100%{ transform: scale(1.05) rotate(1deg); }
+}
+
+/* Grid lines */
+.grid-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 70% 60% at 60% 40%, black 0%, transparent 80%);
+}
+
+.hero-inner {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto; width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+}
+
+.hero-left { animation: fadeUp .8s ease both; }
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(232,70,10,.12);
+  border: 1px solid rgba(232,70,10,.3);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 12px; font-weight: 600;
+  color: var(--or); letter-spacing: 1px; text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--or);
+  animation: blink 2s ease infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(68px, 8vw, 108px);
+  line-height: .92; letter-spacing: 1px;
+  margin-bottom: 28px;
+}
+.hero-title .line-or { color: var(--or); display: block; }
+.hero-title .line-wh { color: var(--wh); display: block; }
+
+.hero-sub {
+  font-size: 18px; color: var(--gyl); line-height: 1.65;
+  max-width: 480px; margin-bottom: 44px; font-weight: 400;
+}
+.hero-sub strong { color: var(--wh); font-weight: 600; }
+
+/* Email signup */
+.signup-form {
+  display: flex; gap: 0;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px; overflow: hidden;
+  max-width: 480px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.signup-form:focus-within {
+  border-color: var(--or);
+  box-shadow: 0 0 0 3px rgba(232,70,10,.12);
+}
+.signup-form input {
+  flex: 1; background: none; border: none; outline: none;
+  padding: 16px 20px; font-size: 15px; font-weight: 400;
+  color: var(--wh); font-family: 'Outfit', sans-serif;
+}
+.signup-form input::placeholder { color: var(--gyl); }
+.signup-form button {
+  background: var(--or); color: var(--wh);
+  border: none; padding: 16px 28px;
+  font-size: 14px; font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  cursor: none; white-space: nowrap;
+  transition: background .2s;
+}
+.signup-form button:hover { background: var(--or2); }
+
+.signup-note {
+  font-size: 12px; color: var(--gyl);
+  margin-top: 12px; letter-spacing: .2px;
+}
+.signup-note span { color: var(--gn); }
+
+/* Hero right — phone mockup */
+.hero-right {
+  display: flex; justify-content: center; align-items: center;
+  animation: fadeUp .8s .2s ease both;
+}
+.phone-wrap {
+  position: relative;
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0%,100%{ transform: translateY(0) rotate(-1deg); }
+  50%    { transform: translateY(-18px) rotate(1deg); }
+}
+.phone-shell {
+  width: 280px; background: #111;
+  border-radius: 44px;
+  border: 1.5px solid rgba(255,255,255,.1);
+  box-shadow:
+    0 60px 120px rgba(0,0,0,.7),
+    0 0 0 1px rgba(255,255,255,.04),
+    inset 0 1px 0 rgba(255,255,255,.08);
+  overflow: hidden;
+  position: relative;
+}
+.phone-notch {
+  width: 90px; height: 28px; background: #000;
+  border-radius: 0 0 20px 20px;
+  margin: 0 auto 0;
+  position: relative; z-index: 2;
+}
+.phone-screen {
+  padding: 0 0 32px;
+  background: #0a0a0a;
+}
+/* mini app UI inside phone */
+.p-bar {
+  background: linear-gradient(180deg,#1a0800,#0a0a0a);
+  padding: 18px 18px 14px;
+}
+.p-label { font-size: 8px; font-weight: 700; color: var(--or); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+.p-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: .5px; color: var(--wh); }
+.p-search {
+  margin: 10px 14px 0;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px; padding: 9px 12px;
+  font-size: 10px; color: #555;
+  display: flex; align-items: center; gap: 6px;
+}
+
+.p-cats {
+  display: flex; gap: 6px; overflow: hidden;
+  padding: 12px 14px 0; flex-wrap: wrap;
+}
+.p-cat {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px; padding: 5px 8px;
+  font-size: 8px; color: #777;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  min-width: 38px;
+}
+.p-cat-ic { font-size: 12px; }
+
+.p-cards { padding: 10px 14px 0; }
+.p-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 12px; padding: 10px;
+  margin-bottom: 8px; display: flex; gap: 8px; align-items: center;
+}
+.p-avatar {
+  width: 30px; height: 30px; border-radius: 10px;
+  background: linear-gradient(135deg,var(--or),var(--ord));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 800; flex-shrink: 0; color: var(--wh);
+}
+.p-info { flex: 1; min-width: 0; }
+.p-name { font-size: 9px; font-weight: 700; color: var(--wh); }
+.p-co   { font-size: 8px; color: #555; margin-top: 1px; }
+.p-stars { font-size: 8px; color: var(--go); margin-top: 2px; }
+.p-rate { font-size: 10px; font-weight: 800; color: var(--or); }
+
+.p-nav {
+  display: flex; justify-content: space-around;
+  padding: 10px 0 0; border-top: 1px solid rgba(255,255,255,.06);
+  margin-top: 10px;
+}
+.p-nbi { font-size: 14px; opacity: .4; }
+.p-nbi.on { opacity: 1; filter: sepia(1) saturate(5) hue-rotate(-20deg); }
+
+/* Glow under phone */
+.phone-glow {
+  position: absolute; bottom: -40px; left: 50%;
+  transform: translateX(-50%);
+  width: 200px; height: 60px;
+  background: radial-gradient(ellipse, rgba(232,70,10,.35), transparent 70%);
+  border-radius: 50%;
+  filter: blur(20px);
+}
+
+/* Floating badges */
+.badge-float {
+  position: absolute;
+  background: var(--dk3);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 12px; font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+}
+.bf-1 {
+  top: 15%; right: -30px;
+  animation: floatBadge1 7s ease-in-out infinite;
+  color: var(--gn);
+  border-color: rgba(0,170,102,.2);
+  background: rgba(0,170,102,.08);
+}
+.bf-2 {
+  bottom: 20%; left: -40px;
+  animation: floatBadge2 8s ease-in-out infinite;
+  font-size: 11px;
+}
+.bf-3 {
+  top: 55%; right: -50px;
+  animation: floatBadge3 9s ease-in-out infinite;
+  font-size: 11px; color: var(--go);
+  border-color: rgba(245,166,35,.2);
+  background: rgba(245,166,35,.07);
+}
+@keyframes floatBadge1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+@keyframes floatBadge2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+@keyframes floatBadge3 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+
+/* ── STATS STRIP ─────────────────────────────────────────────────────── */
+#stats {
+  padding: 0 40px;
+  max-width: 1200px; margin: 0 auto;
+}
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 20px; overflow: hidden;
+  background: rgba(255,255,255,.02);
+}
+.stat-item {
+  padding: 36px 32px;
+  border-right: 1px solid rgba(255,255,255,.07);
+  position: relative;
+  animation: fadeUp .6s ease both;
+}
+.stat-item:last-child { border-right: none; }
+.stat-item::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px; background: transparent;
+  transition: background .3s;
+}
+.stat-item:hover::before { background: var(--or); }
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px; color: var(--or);
+  letter-spacing: 1px; line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-lbl {
+  font-size: 13px; color: var(--gyl); font-weight: 400;
+  line-height: 1.4;
+}
+
+/* ── HOW IT WORKS ─────────────────────────────────────────────────────── */
+#how {
+  padding: 120px 40px;
+  max-width: 1200px; margin: 0 auto;
+}
+.section-label {
+  font-size: 11px; font-weight: 700; color: var(--or);
+  letter-spacing: 2.5px; text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 5vw, 64px);
+  letter-spacing: 1px; line-height: 1;
+  margin-bottom: 60px;
+}
+.section-title em { color: var(--or); font-style: normal; }
+
+.steps-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2px; border-radius: 20px; overflow: hidden;
+}
+.step {
+  background: var(--dk3);
+  padding: 48px 40px;
+  position: relative; overflow: hidden;
+  transition: background .3s;
+}
+.step:hover { background: #1a1a1a; }
+.step::after {
+  content: '';
+  position: absolute; bottom: 0; left: 40px; right: 40px;
+  height: 1px; background: rgba(232,70,10,.2);
+}
+.step-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 80px; color: rgba(232,70,10,.12);
+  line-height: 1; margin-bottom: 24px;
+  transition: color .3s;
+}
+.step:hover .step-num { color: rgba(232,70,10,.25); }
+.step-icon {
+  font-size: 32px; margin-bottom: 16px; display: block;
+}
+.step-title {
+  font-size: 18px; font-weight: 700;
+  color: var(--wh); margin-bottom: 10px;
+}
+.step-body {
+  font-size: 14px; color: var(--gyl); line-height: 1.65;
+}
+
+/* ── FEATURES ─────────────────────────────────────────────────────────── */
+#features {
+  padding: 0 40px 120px;
+  max-width: 1200px; margin: 0 auto;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.feat-card {
+  background: var(--dk3);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 20px; padding: 36px 32px;
+  position: relative; overflow: hidden;
+  transition: border-color .3s, transform .3s;
+  animation: fadeUp .6s ease both;
+}
+.feat-card:hover {
+  border-color: rgba(232,70,10,.3);
+  transform: translateY(-4px);
+}
+.feat-card.wide {
+  grid-column: span 2;
+}
+.feat-icon {
+  font-size: 28px; margin-bottom: 20px; display: block;
+}
+.feat-tag {
+  display: inline-block;
+  font-size: 10px; font-weight: 700;
+  color: var(--or); letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.feat-title {
+  font-size: 20px; font-weight: 800;
+  color: var(--wh); margin-bottom: 12px; line-height: 1.2;
+}
+.feat-body {
+  font-size: 14px; color: var(--gyl); line-height: 1.65;
+}
+.feat-vendors {
+  display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;
+}
+.vendor-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 100px; padding: 5px 12px;
+  font-size: 12px; font-weight: 600;
+}
+
+/* ── PRICING ─────────────────────────────────────────────────────────── */
+#pricing {
+  padding: 0 40px 120px;
+  max-width: 1200px; margin: 0 auto;
+}
+.pricing-top {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: start;
+  margin-bottom: 60px;
+}
+.plans-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.plan {
+  background: var(--dk3);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 20px; padding: 32px 28px;
+  position: relative;
+  transition: border-color .3s, transform .3s;
+}
+.plan:hover { transform: translateY(-4px); }
+.plan.featured {
+  border-color: var(--or);
+  background: rgba(232,70,10,.06);
+}
+.plan.featured::before {
+  content: 'MOST POPULAR';
+  position: absolute; top: -12px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--or); color: var(--wh);
+  font-size: 9px; font-weight: 800;
+  padding: 4px 14px; border-radius: 100px;
+  letter-spacing: 1.5px;
+}
+.plan-name {
+  font-size: 12px; font-weight: 700; color: var(--gyl);
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.plan-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px; color: var(--wh);
+  letter-spacing: 1px; line-height: 1;
+}
+.plan-price sup { font-size: 24px; vertical-align: top; margin-top: 10px; display: inline-block; }
+.plan-price sub { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 400; color: var(--gyl); }
+.plan-period { font-size: 12px; color: var(--gyl); margin: 8px 0 24px; }
+.plan-divider {
+  height: 1px; background: rgba(255,255,255,.07);
+  margin-bottom: 24px;
+}
+.plan-feature {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--gyl);
+  margin-bottom: 10px;
+}
+.plan-feature::before {
+  content: '✓';
+  color: var(--gn); font-weight: 700; flex-shrink: 0;
+}
+.plan-cta {
+  display: block; width: 100%; margin-top: 28px;
+  padding: 13px; text-align: center;
+  border-radius: 10px; font-size: 14px; font-weight: 700;
+  text-decoration: none; transition: all .2s;
+  font-family: 'Outfit', sans-serif; cursor: none;
+}
+.plan-cta-outline {
+  background: none;
+  border: 1.5px solid rgba(255,255,255,.15);
+  color: var(--wh);
+}
+.plan-cta-outline:hover { border-color: var(--or); color: var(--or); }
+.plan-cta-filled {
+  background: var(--or); border: 1.5px solid var(--or);
+  color: var(--wh);
+}
+.plan-cta-filled:hover { background: var(--or2); }
+
+/* ── WAITLIST / CTA SECTION ─────────────────────────────────────────── */
+#waitlist {
+  padding: 0 40px 120px;
+  max-width: 1200px; margin: 0 auto;
+}
+.waitlist-inner {
+  background: linear-gradient(135deg, #1a0800, #0f0a00);
+  border: 1px solid rgba(232,70,10,.25);
+  border-radius: 28px;
+  padding: 80px 80px;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.waitlist-inner::before {
+  content: '';
+  position: absolute; top: -80px; right: -80px;
+  width: 360px; height: 360px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,70,10,.18), transparent 65%);
+}
+.waitlist-inner::after {
+  content: '';
+  position: absolute; bottom: -60px; left: -60px;
+  width: 280px; height: 280px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,70,10,.1), transparent 65%);
+}
+.waitlist-inner > * { position: relative; z-index: 1; }
+.waitlist-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 5vw, 72px);
+  letter-spacing: 1px; line-height: 1;
+  margin-bottom: 18px;
+}
+.waitlist-title em { color: var(--or); font-style: normal; }
+.waitlist-sub {
+  font-size: 17px; color: var(--gyl); max-width: 560px;
+  margin: 0 auto 40px; line-height: 1.6;
+}
+.waitlist-form {
+  display: flex; gap: 0;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px; overflow: hidden;
+  max-width: 520px; margin: 0 auto;
+  transition: border-color .2s, box-shadow .2s;
+}
+.waitlist-form:focus-within {
+  border-color: var(--or);
+  box-shadow: 0 0 0 4px rgba(232,70,10,.12);
+}
+.waitlist-form input {
+  flex: 1; background: none; border: none; outline: none;
+  padding: 18px 22px; font-size: 15px; color: var(--wh);
+  font-family: 'Outfit', sans-serif;
+}
+.waitlist-form input::placeholder { color: rgba(255,255,255,.3); }
+.waitlist-form button {
+  background: var(--or); color: var(--wh);
+  border: none; padding: 18px 32px;
+  font-size: 15px; font-weight: 700;
+  font-family: 'Outfit', sans-serif; cursor: none;
+  transition: background .2s; white-space: nowrap;
+}
+.waitlist-form button:hover { background: var(--or2); }
+.waitlist-logos {
+  display: flex; gap: 24px; justify-content: center;
+  margin-top: 48px; flex-wrap: wrap;
+}
+.wl-logo {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600;
+  padding: 8px 18px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 100px;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────────────────── */
+footer {
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 48px 40px;
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 24px;
+}
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 1px;
+  text-decoration: none;
+}
+.footer-logo span:first-child { color: var(--wh); }
+.footer-logo span:last-child  { color: var(--or); }
+.footer-links {
+  display: flex; gap: 32px; list-style: none;
+}
+.footer-links a {
+  color: var(--gyl); font-size: 13px;
+  text-decoration: none; transition: color .2s;
+}
+.footer-links a:hover { color: var(--wh); }
+.footer-copy {
+  font-size: 12px; color: var(--gyl);
+  text-align: right;
+}
+
+/* ── SUCCESS STATE ───────────────────────────────────────────────────── */
+.success-msg {
+  display: none;
+  align-items: center; gap: 10px;
+  background: rgba(0,170,102,.1);
+  border: 1px solid rgba(0,170,102,.3);
+  border-radius: 12px; padding: 16px 20px;
+  font-size: 14px; font-weight: 600; color: var(--gn);
+  max-width: 480px;
+}
+.success-msg.show { display: flex; }
+
+/* ── ANIMATIONS ──────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ── MOBILE ───────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  body { cursor: auto; }
+  #cursor { display: none; }
+  nav { padding: 0 20px; }
+  nav ul { display: none; }
+  #hero { padding: 100px 20px 60px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .hero-right { display: none; }
+  #stats { padding: 0 20px; }
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  #how, #features, #pricing, #waitlist { padding: 80px 20px; }
+  .steps-grid { grid-template-columns: 1fr; gap: 2px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .feat-card.wide { grid-column: span 1; }
+  .pricing-top { grid-template-columns: 1fr; }
+  .plans-grid { grid-template-columns: 1fr; }
+  .waitlist-inner { padding: 52px 28px; }
+  .footer-inner { flex-direction: column; align-items: flex-start; }
+  .footer-copy { text-align: left; }
+  .badge-float { display: none; }
+  .hero-title { font-size: 64px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor">
+  <div id="cursor-ring"></div>
+  <div id="cursor-dot"></div>
+</div>
+
+<!-- ── NAV ──────────────────────────────────────────────────────────── -->
+<nav>
+  <a href="#" class="nav-logo"><span>GO</span><span>FIX</span></a>
+  <ul>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#waitlist">For Contractors</a></li>
+  </ul>
+  <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="mesh"></div>
+  <div class="grid-bg"></div>
+
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Launching in Chicagoland — 2025</div>
+
+      <h1 class="hero-title">
+        <span class="line-wh">FIND</span>
+        <span class="line-or">PROS.</span>
+        <span class="line-wh">GET IT</span>
+        <span class="line-wh">DONE.</span>
+      </h1>
+
+      <p class="hero-sub">
+        The home services marketplace that puts <strong>homeowners first</strong> and actually works for contractors. Find trusted local pros, get <strong>real material prices</strong> from Home Depot, Menards &amp; Amazon, or DIY with YouTube &amp; TikTok tutorials.
+      </p>
+
+      <form class="signup-form" onsubmit="handleSignup(event, 'hero-success')">
+        <input type="email" id="hero-email" placeholder="Enter your email address" required>
+        <button type="submit">Get Early Access</button>
+      </form>
+      <div id="hero-success" class="success-msg">
+        <span>✓</span> You're on the list! We'll notify you at launch.
+      </div>
+      <p class="signup-note"><span>✓ Free for homeowners.</span> &nbsp;Always. No credit card required.</p>
+    </div>
+
+    <div class="hero-right">
+      <div class="phone-wrap">
+        <!-- Floating badges -->
+        <div class="badge-float bf-1">✓ Job booked in 3 mins</div>
+        <div class="badge-float bf-2">🏠 Home Depot · $89.97</div>
+        <div class="badge-float bf-3">⭐ 4.9 · 312 reviews</div>
+
+        <!-- Phone shell -->
+        <div class="phone-shell">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="p-bar">
+              <div class="p-label">📍 Chicagoland, IL</div>
+              <div class="p-title">Find a Pro Today</div>
+            </div>
+            <div class="p-search">
+              <span>⌕</span> Plumber, electrician, HVAC...
+            </div>
+            <div class="p-cats">
+              <div class="p-cat"><span class="p-cat-ic">🔧</span><span>Plumbing</span></div>
+              <div class="p-cat"><span class="p-cat-ic">⚡</span><span>Electric</span></div>
+              <div class="p-cat"><span class="p-cat-ic">❄️</span><span>HVAC</span></div>
+              <div class="p-cat"><span class="p-cat-ic">🏠</span><span>Roofing</span></div>
+              <div class="p-cat"><span class="p-cat-ic">🎨</span><span>Paint</span></div>
+            </div>
+            <div class="p-cards">
+              <div class="p-card">
+                <div class="p-avatar">MT</div>
+                <div class="p-info">
+                  <div class="p-name">Marcus T.</div>
+                  <div class="p-co">ProFix Solutions</div>
+                  <div class="p-stars">★★★★★ 4.9</div>
+                </div>
+                <div class="p-rate">$95/hr</div>
+              </div>
+              <div class="p-card">
+                <div class="p-avatar" style="background:linear-gradient(135deg,#2563EB,#1d4ed8)">AR</div>
+                <div class="p-info">
+                  <div class="p-name">Alicia R.</div>
+                  <div class="p-co">Bright Spark Electric</div>
+                  <div class="p-stars">★★★★★ 4.8</div>
+                </div>
+                <div class="p-rate">$110/hr</div>
+              </div>
+            </div>
+            <div class="p-nav">
+              <span class="p-nbi on">⊞</span>
+              <span class="p-nbi">📋</span>
+              <span class="p-nbi">🎬</span>
+              <span class="p-nbi">💳</span>
+              <span class="p-nbi">◎</span>
+            </div>
+          </div>
+        </div>
+        <div class="phone-glow"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ─────────────────────────────────────────────────────────── -->
+<section id="stats">
+  <div class="stats-grid">
+    <div class="stat-item" style="animation-delay:.1s">
+      <div class="stat-num">$600B+</div>
+      <div class="stat-lbl">U.S. home services market — massively underserved online</div>
+    </div>
+    <div class="stat-item" style="animation-delay:.2s">
+      <div class="stat-num">60M+</div>
+      <div class="stat-lbl">U.S. homeowners spending $4K+ per year on repairs</div>
+    </div>
+    <div class="stat-item" style="animation-delay:.3s">
+      <div class="stat-num">80%</div>
+      <div class="stat-lbl">Less than competitors — flat subscription, no per-lead fees</div>
+    </div>
+    <div class="stat-item" style="animation-delay:.4s">
+      <div class="stat-num">FREE</div>
+      <div class="stat-lbl">For every homeowner, forever — no hidden charges</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ─────────────────────────────────────────────────── -->
+<section id="how">
+  <div class="section-label">How It Works</div>
+  <h2 class="section-title">Three ways to<br><em>get it done</em></h2>
+
+  <div class="steps-grid">
+    <div class="step fade-in">
+      <div class="step-num">01</div>
+      <span class="step-icon">📋</span>
+      <div class="step-title">Get a Pro Quote</div>
+      <div class="step-body">Describe your job. GOFiX instantly pulls material pricing from Home Depot, Menards &amp; Amazon and builds a complete cost estimate. Verified local contractors receive your job request and compete for your business — labor + materials, all in one quote.</div>
+    </div>
+    <div class="step fade-in" style="transition-delay:.1s">
+      <div class="step-num">02</div>
+      <span class="step-icon">🎬</span>
+      <div class="step-title">DIY With Tutorials</div>
+      <div class="step-body">GOFiX searches YouTube and TikTok to find the best how-to videos for your specific job. Unlock a full DIY guide ($4.99–$19.99) that includes curated tutorials ranked by difficulty, plus a complete material list with buy links to all three vendors.</div>
+    </div>
+    <div class="step fade-in" style="transition-delay:.2s">
+      <div class="step-num">03</div>
+      <span class="step-icon">💳</span>
+      <div class="step-title">Pay with GOFiX Wallet</div>
+      <div class="step-body">Pre-load your GOFiX Wallet like a Starbucks card. Pay any service instantly — no card entry, no friction. Deposit $50+ and earn up to 15% in bonus credits. All contractor payments are held in escrow until the job is confirmed complete.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ─────────────────────────────────────────────────────── -->
+<section id="features">
+  <div class="section-label">Features</div>
+  <h2 class="section-title">Built different<br>from the <em>ground up</em></h2>
+
+  <div class="features-grid">
+    <div class="feat-card wide fade-in">
+      <span class="feat-tag">Smart Pricing</span>
+      <span class="feat-icon">🏪</span>
+      <div class="feat-title">Live Material Pricing from 3 Vendors</div>
+      <div class="feat-body">No more guessing what a job will cost. GOFiX connects to Home Depot, Menards, and Amazon APIs to pull real-time product prices and embed them directly in your contractor quote — so both you and the pro see the same numbers from the start.</div>
+      <div class="feat-vendors">
+        <div class="vendor-pill" style="color:#F96302">🟠 Home Depot</div>
+        <div class="vendor-pill" style="color:#007A33">🟢 Menards</div>
+        <div class="vendor-pill" style="color:#FF9900">📦 Amazon</div>
+      </div>
+    </div>
+
+    <div class="feat-card fade-in" style="transition-delay:.1s">
+      <span class="feat-tag">DIY Mode</span>
+      <span class="feat-icon">🎬</span>
+      <div class="feat-title">YouTube & TikTok Tutorials</div>
+      <div class="feat-body">GOFiX curates the best how-to content across YouTube and TikTok for your exact job. Ranked by match percentage, difficulty level, and view count — so you always get the most trusted tutorials, not random results.</div>
+    </div>
+
+    <div class="feat-card fade-in" style="transition-delay:.15s">
+      <span class="feat-tag">Wallet</span>
+      <span class="feat-icon">💳</span>
+      <div class="feat-title">GOFiX Wallet &amp; Bonuses</div>
+      <div class="feat-body">Pre-load funds and pay for any service in one tap. Deposit $100+ and earn 10% bonus credits automatically. Auto-reload keeps your balance topped up so you're never blocked when you need a pro fast.</div>
+    </div>
+
+    <div class="feat-card fade-in" style="transition-delay:.2s">
+      <span class="feat-tag">Trust & Safety</span>
+      <span class="feat-icon">🔒</span>
+      <div class="feat-title">Escrow Payments &amp; Verified Pros</div>
+      <div class="feat-body">Every contractor is license-verified, insurance-checked, and identity-confirmed. Your payment is held in escrow and only released when you confirm the job is done to your satisfaction.</div>
+    </div>
+
+    <div class="feat-card fade-in" style="transition-delay:.25s">
+      <span class="feat-tag">For Contractors</span>
+      <span class="feat-icon">🔧</span>
+      <div class="feat-title">Flat Subscription. No Per-Lead Fees.</div>
+      <div class="feat-body">Angi and Thumbtack charge $300–$500/month plus per-lead fees. GOFiX charges $29–$149/month flat. No hidden charges. No paying for leads you don't win. Unlimited job requests on Pro and Elite plans.</div>
+    </div>
+
+    <div class="feat-card fade-in" style="transition-delay:.3s">
+      <span class="feat-tag">Messaging</span>
+      <span class="feat-icon">💬</span>
+      <div class="feat-title">Real-Time In-App Messaging</div>
+      <div class="feat-body">Chat directly with contractors before committing. Share photos, ask questions, and get quotes — all within the GOFiX app. No sharing your phone number until you're ready to book.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ─────────────────────────────────────────────────────── -->
+<section id="pricing">
+  <div class="section-label">Contractor Plans</div>
+  <div class="pricing-top">
+    <div>
+      <h2 class="section-title" style="margin-bottom:20px">Simple, flat<br><em>monthly pricing</em></h2>
+      <p style="font-size:16px;color:var(--gyl);line-height:1.65;max-width:440px">
+        No per-lead fees. No hidden charges. No contracts. Pick the plan that fits your business and cancel anytime. <strong style="color:var(--wh)">Homeowners are always free.</strong>
+      </p>
+    </div>
+    <div style="background:rgba(0,170,102,.06);border:1px solid rgba(0,170,102,.2);border-radius:16px;padding:28px 32px">
+      <div style="font-size:13px;font-weight:700;color:var(--gn);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px">Contractor Savings vs. Angi</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--gn);line-height:1">$200–$400</div>
+      <div style="font-size:14px;color:var(--gyl);margin-top:6px">saved per month on average by switching from Angi or Thumbtack to GOFiX Pro</div>
+    </div>
+  </div>
+
+  <div class="plans-grid">
+    <div class="plan fade-in">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price"><sup>$</sup>29<sub>/mo</sub></div>
+      <div class="plan-period">or $290/yr — save 2 months</div>
+      <div class="plan-divider"></div>
+      <div class="plan-feature">Profile listing</div>
+      <div class="plan-feature">Up to 10 leads/month</div>
+      <div class="plan-feature">Basic analytics</div>
+      <div class="plan-feature">Customer messaging</div>
+      <a href="#waitlist" class="plan-cta plan-cta-outline">Get Started</a>
+    </div>
+
+    <div class="plan featured fade-in" style="transition-delay:.1s">
+      <div class="plan-name">Pro</div>
+      <div class="plan-price"><sup>$</sup>79<sub>/mo</sub></div>
+      <div class="plan-period">or $790/yr — save 2 months</div>
+      <div class="plan-divider"></div>
+      <div class="plan-feature">Unlimited leads</div>
+      <div class="plan-feature">Priority placement</div>
+      <div class="plan-feature">Verified badge &amp; seal</div>
+      <div class="plan-feature">Review boost tools</div>
+      <div class="plan-feature">Advanced analytics</div>
+      <a href="#waitlist" class="plan-cta plan-cta-filled">Get Started</a>
+    </div>
+
+    <div class="plan fade-in" style="transition-delay:.2s">
+      <div class="plan-name">Elite</div>
+      <div class="plan-price"><sup>$</sup>149<sub>/mo</sub></div>
+      <div class="plan-period">or $1,490/yr — save 2 months</div>
+      <div class="plan-divider"></div>
+      <div class="plan-feature">Homepage featured slot</div>
+      <div class="plan-feature">Sponsored category ads</div>
+      <div class="plan-feature">Video profile listing</div>
+      <div class="plan-feature">Dedicated account rep</div>
+      <div class="plan-feature">Everything in Pro</div>
+      <a href="#waitlist" class="plan-cta plan-cta-outline">Get Started</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── WAITLIST CTA ───────────────────────────────────────────────── -->
+<section id="waitlist">
+  <div class="waitlist-inner">
+    <div class="section-label">Early Access</div>
+    <h2 class="waitlist-title">Be first in<br><em>Chicagoland</em></h2>
+    <p class="waitlist-sub">GOFiX is launching in the Chicagoland suburbs first. Join the waitlist for early access — homeowners get free priority booking and contractors get 30 days free.</p>
+
+    <form class="waitlist-form" onsubmit="handleSignup(event, 'waitlist-success')">
+      <input type="email" id="waitlist-email" placeholder="Your email address" required>
+      <button type="submit">Join the Waitlist</button>
+    </form>
+    <div id="waitlist-success" class="success-msg" style="max-width:520px;margin:16px auto 0">
+      <span>✓</span> You're on the list! We'll be in touch before launch.
+    </div>
+
+    <div class="waitlist-logos" style="margin-top:40px">
+      <div class="wl-logo"><span>🟠</span> Home Depot Partner</div>
+      <div class="wl-logo"><span>📦</span> Amazon Affiliate</div>
+      <div class="wl-logo"><span>🟢</span> Menards Partner</div>
+      <div class="wl-logo"><span>▶</span> YouTube API</div>
+      <div class="wl-logo"><span>♪</span> TikTok API</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <a href="#" class="footer-logo"><span>GO</span><span>FIX</span></a>
+    <ul class="footer-links">
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="mailto:hello@gofix.live">Contact</a></li>
+    </ul>
+    <div class="footer-copy">
+      © 2025 GOFiX · JL Design LLC · GoFix.live<br>
+      <span style="color:#444">Chicago, Illinois</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Custom cursor ───────────────────────────────────────────────────────
+const dot  = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  dot.style.left  = mx + 'px';
+  dot.style.top   = my + 'px';
+});
+
+function animCursor() {
+  rx += (mx - rx) * .12;
+  ry += (my - ry) * .12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+
+// ── Scroll fade-in ──────────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ── Stat counter animation ──────────────────────────────────────────────
+const statObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.stat-item').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = `opacity .6s ease ${el.style.animationDelay || '0s'}, transform .6s ease ${el.style.animationDelay || '0s'}`;
+  statObserver.observe(el);
+});
+
+// ── Form submission ─────────────────────────────────────────────────────
+function handleSignup(e, successId) {
+  e.preventDefault();
+  const form   = e.target;
+  const input  = form.querySelector('input[type="email"]');
+  const msg    = document.getElementById(successId);
+  const email  = input.value.trim();
+  if (!email) return;
+
+  // Store locally (replace with your email service: Mailchimp, ConvertKit, etc.)
+  const signups = JSON.parse(localStorage.getItem('gofix_signups') || '[]');
+  if (!signups.includes(email)) signups.push(email);
+  localStorage.setItem('gofix_signups', JSON.stringify(signups));
+
+  // Show success
+  form.style.display = 'none';
+  msg.classList.add('show');
+
+  // Log for now (replace with API call to your email service)
+  console.log('GOFiX signup:', email, '| Total:', signups.length);
+}
+
+// ── Smooth active nav highlighting ─────────────────────────────────────
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav ul a');
+
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  sections.forEach(sec => {
+    const top = sec.offsetTop - 100;
+    const bot = top + sec.offsetHeight;
+    const id  = sec.getAttribute('id');
+    const link = document.querySelector(`nav ul a[href="#${id}"]`);
+    if (link) {
+      if (scrollY >= top && scrollY < bot) link.style.color = '#fff';
+      else link.style.color = '';
+    }
+  });
+}, { passive: true });
+
+// ── Parallax on hero mesh ───────────────────────────────────────────────
+const mesh = document.querySelector('.mesh');
+window.addEventListener('scroll', () => {
+  mesh.style.transform = `translateY(${window.scrollY * .15}px)`;
+}, { passive: true });
+</script>
+</body>
+</html>
