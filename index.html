@@ -496,11 +496,25 @@ function handleSignup(e,successId){
   e.preventDefault();
   const form=e.target,input=form.querySelector('input[type="email"]'),msg=document.getElementById(successId),email=input.value.trim();
   if(!email)return;
+
+  // Post to Mailchimp via hidden iframe trick (avoids CORS)
+  const mcUrl='https://us7.list-manage.com/subscribe/post-json?u=5b0e4aebb05654035b5afb9e6&id=481e2654eaa21429038e4ec4f&f_id=00&EMAIL='+encodeURIComponent(email)+'&c=mailchimpCallback';
+  const script=document.createElement('script');
+  script.src=mcUrl;
+  document.body.appendChild(script);
+
+  // Also store locally as backup
   const signups=JSON.parse(localStorage.getItem('gofix_signups')||'[]');
   if(!signups.includes(email))signups.push(email);
   localStorage.setItem('gofix_signups',JSON.stringify(signups));
-  form.style.display='none';msg.classList.add('show');
-  console.log('GOFiX signup:',email,'| Total:',signups.length);
+
+  form.style.display='none';
+  msg.classList.add('show');
+}
+
+// Mailchimp JSONP callback
+function mailchimpCallback(resp){
+  console.log('Mailchimp:', resp.result, resp.msg);
 }
 
 const sections=document.querySelectorAll('section[id]');
@@ -509,5 +523,8 @@ window.addEventListener('scroll',()=>{const scrollY=window.scrollY;sections.forE
 const mesh=document.querySelector('.mesh');
 window.addEventListener('scroll',()=>{mesh.style.transform=`translateY(${window.scrollY*.15}px)`;},{passive:true});
 </script>
+
+<!-- Mailchimp Connected Script -->
+<script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/5b0e4aebb05654035b5afb9e6/481e2654eaa21429038e4ec4f.js");</script>
 </body>
 </html>
