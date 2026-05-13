@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOFiX — Find Pros. Get It Done.</title>
+<meta name="description" content="GOFiX connects homeowners with trusted local contractors in Chicagoland. No middlemen. No markups. Just real pros who show up.">
+<meta property="og:title" content="GOFiX — Find Pros. Get It Done.">
+<meta property="og:description" content="The home services marketplace built for Chicagoland.">
+<meta property="og:url" content="https://gofix.live">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --orange: #FF4713;
+  --black: #0D0D0D;
+  --white: #F5F4F0;
+  --gray: #8A8A8A;
+  --mid: #1C1C1C;
+  --border: rgba(255,255,255,0.08);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Barlow', sans-serif;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,13,13,0.96);
+  backdrop-filter: blur(12px);
+}
+.logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 26px;
+  letter-spacing: -0.5px;
+}
+.logo span:first-child { color: var(--gray); }
+.logo span:last-child { color: var(--orange); }
+nav ul {
+  display: flex; gap: 32px;
+  justify-content: center;
+  list-style: none;
+}
+nav ul a {
+  color: var(--gray);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+nav ul a:hover { color: var(--white); }
+.nav-cta {
+  background: var(--orange);
+  color: var(--white) !important;
+  padding: 10px 22px;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.1s;
+}
+.nav-cta:hover { background: #e03c0e; transform: translateY(-1px); }
+
+/* HERO */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 65px);
+  border-bottom: 1px solid var(--border);
+}
+.hero-left {
+  padding: 80px 60px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.badge {
+  display: inline-block;
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  margin-bottom: 32px;
+  width: fit-content;
+}
+.hero-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(56px, 7vw, 96px);
+  line-height: 0.92;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.hero-title em {
+  color: var(--orange);
+  font-style: normal;
+}
+.hero-sub {
+  color: var(--gray);
+  font-size: 17px;
+  line-height: 1.6;
+  max-width: 440px;
+  margin-bottom: 40px;
+}
+.hero-form {
+  display: flex;
+  gap: 0;
+  max-width: 440px;
+}
+.hero-form input {
+  flex: 1;
+  background: var(--mid);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-right: none;
+  color: var(--white);
+  padding: 14px 18px;
+  font-size: 14px;
+  font-family: 'Barlow', sans-serif;
+  outline: none;
+}
+.hero-form input::placeholder { color: rgba(255,255,255,0.3); }
+.hero-form button {
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  padding: 14px 24px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Barlow', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.hero-form button:hover { background: #e03c0e; }
+.hero-note {
+  font-size: 12px;
+  color: rgba(255,255,255,0.25);
+  margin-top: 12px;
+}
+
+.hero-right {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  border-left: 1px solid var(--border);
+}
+.hero-stat {
+  padding: 50px 50px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero-stat:last-child { border-bottom: none; }
+.stat-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 72px;
+  line-height: 1;
+  color: var(--orange);
+  margin-bottom: 8px;
+}
+.stat-label {
+  font-size: 14px;
+  color: var(--gray);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* TICKER */
+.ticker {
+  background: var(--orange);
+  padding: 12px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-inner {
+  display: inline-flex;
+  animation: ticker 20s linear infinite;
+}
+.ticker-inner span {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0 40px;
+  color: var(--black);
+}
+.ticker-inner span::before {
+  content: '◆';
+  margin-right: 40px;
+  opacity: 0.4;
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* HOW IT WORKS */
+.section {
+  padding: 100px 60px;
+  border-bottom: 1px solid var(--border);
+}
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 16px;
+}
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(36px, 4vw, 56px);
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  margin-bottom: 60px;
+  max-width: 600px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+}
+.step {
+  padding: 48px 40px;
+  border-right: 1px solid var(--border);
+  transition: background 0.25s;
+}
+.step:last-child { border-right: none; }
+.step:hover { background: var(--mid); }
+.step-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 64px;
+  color: rgba(255,255,255,0.06);
+  line-height: 1;
+  margin-bottom: 24px;
+}
+.step-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 12px;
+}
+.step p {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.7;
+}
+
+/* FEATURES */
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  margin-top: 0;
+}
+.feat {
+  padding: 48px 44px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.25s;
+}
+.feat:nth-child(2n) { border-right: none; }
+.feat:nth-child(3), .feat:nth-child(4) { border-bottom: none; }
+.feat:hover { background: var(--mid); }
+.feat-icon {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+.feat-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 10px;
+}
+.feat p {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.7;
+}
+
+/* PRICING */
+.pricing {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+}
+.plan {
+  padding: 48px 40px;
+  border-right: 1px solid var(--border);
+  transition: background 0.25s;
+  position: relative;
+}
+.plan:last-child { border-right: none; }
+.plan.featured {
+  background: var(--mid);
+  border-top: 3px solid var(--orange);
+}
+.plan-badge {
+  position: absolute;
+  top: -1px; right: 24px;
+  background: var(--orange);
+  color: var(--black);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+}
+.plan-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray);
+  margin-bottom: 20px;
+}
+.plan-price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 56px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.plan-price sup {
+  font-size: 24px;
+  vertical-align: top;
+  margin-top: 8px;
+}
+.plan-period {
+  font-size: 13px;
+  color: var(--gray);
+  margin-bottom: 32px;
+}
+.plan ul {
+  list-style: none;
+  margin-bottom: 36px;
+}
+.plan ul li {
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.plan ul li::before {
+  content: '✓';
+  color: var(--orange);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.plan-btn {
+  display: block;
+  text-align: center;
+  padding: 13px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Barlow', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--white);
+  transition: all 0.2s;
+}
+.plan-btn:hover { border-color: var(--orange); color: var(--orange); }
+.plan.featured .plan-btn {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--black);
+}
+.plan.featured .plan-btn:hover { background: #e03c0e; }
+
+/* SAVINGS BAND */
+.savings-band {
+  background: var(--mid);
+  border-bottom: 1px solid var(--border);
+  padding: 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.savings-band h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 48px;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.savings-band h2 span { color: var(--orange); }
+.savings-band p {
+  font-size: 16px;
+  color: var(--gray);
+  line-height: 1.7;
+}
+
+/* CTA */
+.cta-section {
+  padding: 120px 60px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  background: var(--black);
+}
+.cta-section h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(48px, 6vw, 80px);
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+}
+.cta-section h2 span { color: var(--orange); }
+.cta-section p {
+  font-size: 17px;
+  color: var(--gray);
+  max-width: 500px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+.email-row {
+  display: flex;
+  max-width: 460px;
+  margin: 0 auto 16px;
+}
+.email-row input {
+  flex: 1;
+  background: var(--mid);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-right: none;
+  color: var(--white);
+  padding: 16px 20px;
+  font-size: 15px;
+  font-family: 'Barlow', sans-serif;
+  outline: none;
+}
+.email-row input::placeholder { color: rgba(255,255,255,0.25); }
+.email-row button {
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  padding: 16px 28px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Barlow', sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.email-row button:hover { background: #e03c0e; }
+.cta-note {
+  font-size: 12px;
+  color: rgba(255,255,255,0.2);
+}
+
+/* FOOTER */
+footer {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 60px;
+  padding: 60px;
+  border-top: 1px solid var(--border);
+}
+.footer-brand .logo { margin-bottom: 16px; }
+.footer-brand p {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.7;
+  max-width: 300px;
+  margin-bottom: 8px;
+}
+.footer-links h5 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 20px;
+}
+.footer-links ul { list-style: none; }
+.footer-links ul li { margin-bottom: 10px; }
+.footer-links ul a {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links ul a:hover { color: var(--white); }
+.footer-legal p {
+  font-size: 12px;
+  color: rgba(255,255,255,0.2);
+  line-height: 1.8;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  nav ul { display: none; }
+
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-left { padding: 50px 24px; }
+  .hero-right { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .hero-stat { padding: 30px 24px; border-bottom: none; border-right: 1px solid var(--border); }
+  .hero-stat:last-child { border-right: none; }
+  .stat-num { font-size: 48px; }
+
+  .section { padding: 60px 24px; }
+  .steps { grid-template-columns: 1fr; }
+  .step { border-right: none; border-bottom: 1px solid var(--border); }
+  .step:last-child { border-bottom: none; }
+
+  .features { grid-template-columns: 1fr; }
+  .feat { border-right: none !important; }
+  .feat:last-child { border-bottom: none; }
+
+  .pricing { grid-template-columns: 1fr; }
+  .plan { border-right: none; border-bottom: 1px solid var(--border); }
+  .plan:last-child { border-bottom: none; }
+
+  .savings-band { grid-template-columns: 1fr; padding: 40px 24px; gap: 24px; }
+
+  .cta-section { padding: 60px 24px; }
+  .email-row { flex-direction: column; }
+  .email-row input { border-right: 1px solid rgba(255,255,255,0.12); border-bottom: none; }
+
+  footer { grid-template-columns: 1fr; gap: 40px; padding: 40px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><span>GO</span><span>FiX</span></div>
+  <ul>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#cta">Join Waitlist</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">Get Early Access</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="badge">Now Launching in Chicagoland</div>
+    <h1 class="hero-title">Find Pros.<br><em>Get It</em><br>Done.</h1>
+    <p class="hero-sub">GOFiX connects homeowners with trusted local contractors — no middlemen, no markups, no ghosting. Real pros who show up.</p>
+    <div class="hero-form">
+      <input type="email" placeholder="Your email address" id="heroEmail">
+      <button onclick="handleSignup('heroEmail')">Join Waitlist</button>
+    </div>
+    <p class="hero-note">✓ Free for homeowners. Always. No credit card required.</p>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat">
+      <div class="stat-num">0%</div>
+      <div class="stat-label">Commission charged to homeowners</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-num">48h</div>
+      <div class="stat-label">Average time to first contractor response</div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>Plumbing</span><span>Electrical</span><span>HVAC</span><span>Roofing</span><span>Painting</span><span>Landscaping</span><span>Carpentry</span><span>Flooring</span><span>Masonry</span><span>Remodeling</span>
+    <span>Plumbing</span><span>Electrical</span><span>HVAC</span><span>Roofing</span><span>Painting</span><span>Landscaping</span><span>Carpentry</span><span>Flooring</span><span>Masonry</span><span>Remodeling</span>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="section-label">Process</div>
+  <h2 class="section-title">Three Steps to Done</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Post Your Job</div>
+      <p>Describe what needs fixing — upload a photo, set your timeline. Takes under 2 minutes. No account required to browse.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Get Real Quotes</div>
+      <p>Vetted local contractors compete for your job. You get transparent pricing with no inflated middleman fees baked in.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Hire & Done</div>
+      <p>Choose your pro, confirm the job, and pay securely through GOFiX. Funds release only when you're satisfied.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features" style="padding-top:0">
+  <div class="section-label">Platform</div>
+  <h2 class="section-title">Built Different</h2>
+  <div class="features">
+    <div class="feat">
+      <div class="feat-icon">🔍</div>
+      <div class="feat-title">Vetted Contractors Only</div>
+      <p>Every pro on GOFiX passes license verification, insurance checks, and background screening before they can bid on your job.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">💰</div>
+      <div class="feat-title">No Hidden Markups</div>
+      <p>Homeowners pay zero commission. Contractors keep more of what they earn. Transparent pricing from first quote to final invoice.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🔒</div>
+      <div class="feat-title">Secure Escrow Payments</div>
+      <p>Pay through GOFiX and your money is held in escrow. It only releases to the contractor once you confirm the job is done right.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">⭐</div>
+      <div class="feat-title">Real Reviews, Real Data</div>
+      <p>Every review is tied to a verified completed job — no fake ratings, no paid placements, no gaming the system.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing" style="padding-top:0">
+  <div class="section-label">For Contractors</div>
+  <h2 class="section-title">Simple Contractor Plans</h2>
+  <div class="pricing">
+    <div class="plan">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price"><sup>$</sup>0</div>
+      <div class="plan-period">First 30 days free</div>
+      <ul>
+        <li>Up to 5 bids/month</li>
+        <li>Basic profile listing</li>
+        <li>GOFiX verified badge</li>
+        <li>Payment processing</li>
+      </ul>
+      <a href="#cta" class="plan-btn">Get Started Free</a>
+    </div>
+    <div class="plan featured">
+      <div class="plan-badge">Most Popular</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price"><sup>$</sup>79</div>
+      <div class="plan-period">per month</div>
+      <ul>
+        <li>Unlimited bids</li>
+        <li>Priority listing placement</li>
+        <li>Featured profile</li>
+        <li>Lead notifications</li>
+        <li>Analytics dashboard</li>
+      </ul>
+      <a href="#cta" class="plan-btn">Join as Pro</a>
+    </div>
+    <div class="plan">
+      <div class="plan-name">Fleet</div>
+      <div class="plan-price"><sup>$</sup>199</div>
+      <div class="plan-period">per month</div>
+      <ul>
+        <li>Everything in Pro</li>
+        <li>Up to 10 team members</li>
+        <li>FleetLink™ job management</li>
+        <li>Dedicated account rep</li>
+        <li>Custom invoicing</li>
+      </ul>
+      <a href="#cta" class="plan-btn">Contact Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- SAVINGS BAND -->
+<div class="savings-band">
+  <div>
+    <h2>Save Up To <span>30%</span><br>On Every Job</h2>
+  </div>
+  <div>
+    <p>Traditional home service platforms charge 20–35% in hidden fees. GOFiX charges homeowners nothing — ever. Contractors set their own prices and keep more of what they earn.</p>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <h2>Get Early<br><span>Access</span></h2>
+  <p>Homeowners get free priority booking. Contractors get their first 30 days free.</p>
+  <div class="email-row">
+    <input type="email" placeholder="Your email address" id="ctaEmail">
+    <button onclick="handleSignup('ctaEmail')">Join the Waitlist</button>
+  </div>
+  <p class="cta-note">✓ Free for homeowners. Always. No credit card required.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <div class="logo"><span>GO</span><span>FiX</span></div>
+    <p>The home services marketplace that puts homeowners first and actually works for contractors.</p>
+    <p style="font-size:12px;color:rgba(255,255,255,0.2)">Chicago, Illinois · Launching in Chicagoland suburbs first.</p>
+  </div>
+  <div class="footer-links">
+    <h5>Navigate</h5>
+    <ul>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#cta">Join Waitlist</a></li>
+    </ul>
+  </div>
+  <div class="footer-legal">
+    <p>© 2026 GOFiX · JL Design LLC</p>
+    <p>GoFix.live</p>
+    <p style="margin-top:16px">All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+function handleSignup(inputId) {
+  const input = document.getElementById(inputId);
+  const email = input.value.trim();
+  if (!email || !email.includes('@')) {
+    input.style.borderColor = 'var(--orange)';
+    input.placeholder = 'Please enter a valid email';
+    setTimeout(() => {
+      input.style.borderColor = '';
+      input.placeholder = 'Your email address';
+    }, 2000);
+    return;
+  }
+  input.value = '';
+  input.placeholder = '✓ You\'re on the list!';
+  input.style.borderColor = 'rgba(255,71,19,0.5)';
+  setTimeout(() => {
+    input.placeholder = 'Your email address';
+    input.style.borderColor = '';
+  }, 3000);
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.step, .feat, .plan').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, background 0.25s';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
