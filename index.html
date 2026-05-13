@@ -498,7 +498,7 @@ function handleSignup(e,successId){
   if(!email)return;
 
   // Post to Mailchimp via hidden iframe trick (avoids CORS)
-  const mcUrl='https://us7.list-manage.com/subscribe/post-json?u=5b0e4aebb05654035b5afb9e6&id=481e2654eaa21429038e4ec4f&f_id=00&EMAIL='+encodeURIComponent(email)+'&c=mailchimpCallback';
+  const mcUrl='https://us7.list-manage.com/subscribe/post-json?u=5b0e4aebb05654035b5afb9e6&id=571448&f_id=00&EMAIL='+encodeURIComponent(email)+'&c=mailchimpCallback';
   const script=document.createElement('script');
   script.src=mcUrl;
   document.body.appendChild(script);
